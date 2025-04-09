@@ -1,0 +1,93 @@
+<form id="salaryForm">
+    <h2>Salary Slip Generator</h2>
+    <label>Employee Name: <input type="text" id="employeeName" required /></label><br />
+    <label>Email: <input type="email" id="email" required /></label><br />
+    <label>Basic Salary: <input type="number" id="basic" required /></label><br />
+    <label>HRA: <input type="number" id="hra" required /></label><br />
+    <label>Special Allowance: <input type="number" id="allowance" required /></label><br />
+    <button type="submit">Generate & Email PDF</button>
+  </form>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <scri<form id="salaryForm">
+    <h2>Salary Slip Generator</h2>
+    <label>Employee Name: <input type="text" id="employeeName" required /></label><br />
+    <label>Email: <input type="email" id="email" required /></label><br />
+    <label>Basic Salary: <input type="number" id="basic" required /></label><br />
+    <label>HRA: <input type="number" id="hra" required /></label><br />
+    <label>Special Allowance: <input type="number" id="allowance" required /></label><br />
+    <button type="submit">Generate & Email PDF</button>
+  </form>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    document.getElementById("salaryForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+  
+      const name = document.getElementById("employeeName").value;
+      const email = document.getElementById("email").value;
+      const basic = Number(document.getElementById("basic").value);
+      const hra = Number(document.getElementById("hra").value);
+      const allowance = Number(document.getElementById("allowance").value);
+      const gross = basic + hra + allowance;
+  
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(14);
+      doc.text("Salary Slip", 90, 20);
+      doc.text(`Employee Name: ${name}`, 15, 30);
+      doc.text(`Basic Salary: ₹${basic}`, 15, 40);
+      doc.text(`HRA: ₹${hra}`, 15, 50);
+      doc.text(`Special Allowance: ₹${allowance}`, 15, 60);
+      doc.text(`Gross Salary: ₹${gross}`, 15, 70);
+  
+      const pdfBlob = doc.output("blob");
+  
+      const formData = new FormData();
+      formData.append("pdf", pdfBlob, `${name}_SalarySlip.pdf`);
+      formData.append("email", email);
+  
+      const response = await fetch("http://localhost:3000/send-email", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+      alert(result.message);
+    });
+  </script>pt>
+    document.getElementById("salaryForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+  
+      const name = document.getElementById("employeeName").value;
+      const email = document.getElementById("email").value;
+      const basic = Number(document.getElementById("basic").value);
+      const hra = Number(document.getElementById("hra").value);
+      const allowance = Number(document.getElementById("allowance").value);
+      const gross = basic + hra + allowance;
+  
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(14);
+      doc.text("Salary Slip", 90, 20);
+      doc.text(`Employee Name: ${name}`, 15, 30);
+      doc.text(`Basic Salary: ₹${basic}`, 15, 40);
+      doc.text(`HRA: ₹${hra}`, 15, 50);
+      doc.text(`Special Allowance: ₹${allowance}`, 15, 60);
+      doc.text(`Gross Salary: ₹${gross}`, 15, 70);
+  
+      const pdfBlob = doc.output("blob");
+  
+      const formData = new FormData();
+      formData.append("pdf", pdfBlob, `${name}_SalarySlip.pdf`);
+      formData.append("email", email);
+  
+      const response = await fetch("http://localhost:3000/send-email", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await response.json();
+      alert(result.message);
+    });
+  </script>
